@@ -23,7 +23,7 @@ envman add --key EXAMPLE_STEP_OUTPUT --value 'the value you want to share'
 
 MESSAGE="🛑 *$BITRISE_APP_TITLE*: build $BITRISE_BUILD_NUMBER failed 😕 \nURL: $BITRISE_APP_URL\nCommit: $BITRISE_GIT_COMMIT - $BITRISE_GIT_MESSAGE \n\n $CUSTOM_MESSAG"
 
-if [ $BITRISE_BUILD_STATUS -eq 0 ] ; then MESSAGE="✅ *$BITRISE_APP_TITLE*: build $BITRISE_BUILD_NUMBER passed! 🎉\nCommit: $BITRISE_GIT_COMMIT - $BITRISE_GIT_MESSAGE\n Download URL ⬇️: $HOCKEYAPP_DEPLOY_BUILD_URL\n\n $CUSTOM_MESSAGE" ; fi
+if [ $BITRISE_BUILD_STATUS -eq 0 ] ; then MESSAGE="✅ *$BITRISE_APP_TITLE*: build $BITRISE_BUILD_NUMBER passed! 🎉\nCommit: $BITRISE_GIT_COMMIT - $BITRISE_GIT_MESSAGE\n Download URL ⬇️: $DOWNLOAD_URL\n\n $CUSTOM_MESSAGE" ; fi
 
 curl -X POST -H "Content-Type: application/json" -d "{ \"chat_id\": \"$TELEGRAM_CHAT_ID\", \"text\":\"$MESSAGE\", \"parse_mode\": \"markdown\" }" https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage
 
