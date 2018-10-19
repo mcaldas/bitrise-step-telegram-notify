@@ -8,11 +8,13 @@
 # - Bitrise CLI guides: http://devcenter.bitrise.io/bitrise-cli/
 
 title: |-
-  telegram_notify
+  Send Telegram Message
 summary: |
-  Notify group or chat about build status
+  Notify telegram group or chat on builds status.
 description: |
-  Notify group or chat about build status
+  This step will send a message to the provided [telegram](https://core.telegram.org/bots) chat.
+  Includes the build status and download URL. You can also add a custom message to be sent with the notification.
+  This step always runs, no matter if build succeded or failed.
 website: https://github.com/mcaldas/bitrise-step-telegram-notify
 source_code_url: https://github.com/mcaldas/bitrise-step-telegram-notify
 support_url: https://github.com/mcaldas/bitrise-step-telegram-notify/issues
@@ -45,18 +47,15 @@ type_tags:
   - notification
 
 is_requires_admin_user: true
-is_always_run: false
+is_always_run: true
 is_skippable: false
 run_if: ""
 
 deps:
   brew:
-  - name: git
-  - name: wget
+  - name: curl
   apt_get:
-  - name: git
-  - name: wget
-
+  - name: curl
 
 toolkit:
   bash:
@@ -64,27 +63,27 @@ toolkit:
 
 
 inputs:
-  - TELEGRAM_BOT_TOKEN: $TELEGRAM_BOT_TOKEN
+  - telegram_bot_token: $TELEGRAM_BOT_TOKEN
     opts:
       description: |
         The bot token.
         Can also be taken from env var `TELEGRAM_BOT_TOKEN`
       is_required: true
       title: Telegram Bot Token
-  - TELEGRAM_CHAT_ID: $TELEGRAM_CHAT_ID
+  - telegram_chat_id: $TELEGRAM_CHAT_ID
     opts:
       description: |
         The id of the chat notifications will be sent to.
         Can also be taken from env var `TELEGRAM_CHAT_ID`
       is_required: true
       title: Telegram Chat ID
-  - DOWNLOAD_URL: $DOWNLOAD_URL
+  - download_url: $DOWNLOAD_URL
     opts:
       description: |
         The url where artifacts can be downloaded.
       is_required: true
       title: Download URL
-  - CUSTOM_MESSAGE: $CUSTOM_MESSAGE
+  - custom_message: $CUSTOM_MESSAGE
     opts:
       title: "Custom message"
       description: |
