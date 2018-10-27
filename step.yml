@@ -46,9 +46,9 @@ host_os_tags:
 type_tags:
   - notification
 
-is_requires_admin_user: true
+is_requires_admin_user: false
 is_always_run: true
-is_skippable: false
+is_skippable: true
 run_if: ""
 
 deps:
@@ -69,6 +69,7 @@ inputs:
         The bot token.
         Can also be taken from env var `TELEGRAM_BOT_TOKEN`
       is_required: true
+      is_sensitive: true
       title: Telegram Bot Token
   - telegram_chat_id: $TELEGRAM_CHAT_ID
     opts:
@@ -76,6 +77,7 @@ inputs:
         The id of the chat notifications will be sent to.
         Can also be taken from env var `TELEGRAM_CHAT_ID`
       is_required: true
+      is_sensitive: true
       title: Telegram Chat ID
   - download_url: $DOWNLOAD_URL
     opts:
