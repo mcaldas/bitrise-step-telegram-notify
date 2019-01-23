@@ -25,5 +25,5 @@ MESSAGE="🛑 *$BITRISE_APP_TITLE*: build $BITRISE_BUILD_NUMBER failed 😕 \nUR
 
 if [ $BITRISE_BUILD_STATUS -eq 0 ] ; then MESSAGE="✅ *$BITRISE_APP_TITLE*: build $BITRISE_BUILD_NUMBER passed! 🎉\nCommit: $BITRISE_GIT_MESSAGE\n Download URL ⬇️: $download_url\n\n $custom_message" ; fi
 
-curl -X POST -H "Content-Type: application/json" -d "{ \"chat_id\": \"$TELEGRAM_CHAT_ID\", \"text\":\"$MESSAGE\", \"parse_mode\": \"markdown\" }" https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage
+curl -X POST -H "Content-Type: application/json" -d "{ \"chat_id\": \"$telegram_chat_id\", \"text\":\"$MESSAGE\", \"parse_mode\": \"markdown\" }" https://api.telegram.org/bot$telegram_bot_token/sendMessage
 

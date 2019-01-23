@@ -10,7 +10,7 @@ app:
   - BITRISE_STEP_ID: telegram-notify
   - BITRISE_STEP_VERSION: "1.0.4"
   - BITRISE_STEP_GIT_CLONE_URL: https://github.com/mcaldas/bitrise-step-telegram-notify.git
-  - MY_STEPLIB_REPO_FORK_GIT_URL: $MY_STEPLIB_REPO_FORK_GIT_URL
+  - MY_STEPLIB_REPO_FORK_GIT_URL: https://github.com/mcaldas/bitrise-steplib
 
 workflows:
   test:
