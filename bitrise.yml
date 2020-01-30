@@ -20,7 +20,10 @@ workflows:
         - content: |
             #!/bin/bash
             echo "Just an example 'secrets' print."
-            echo "The value of 'A_SECRET_PARAM' is: $A_SECRET_PARAM"
+            echo "BITRISE_GIT_MESSAGE: ${BITRISE_GIT_MESSAGE}"
+            echo "download_url: ${download_url}"
+            echo "telegram_chat_id: ${telegram_chat_id}"
+            echo "telegram_bot_token: ${telegram_bot_token}"
     - change-workdir:
         title: Switch working dir to test / _tmp dir
         description: |-

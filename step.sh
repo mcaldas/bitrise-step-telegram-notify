@@ -23,7 +23,22 @@ set -ex
 
 MESSAGE="🛑 *$BITRISE_APP_TITLE*: build $BITRISE_BUILD_NUMBER failed 😕 \nURL: $BITRISE_APP_URL\nCommit: $BITRISE_GIT_MESSAGE \n\n $custom_message"
 
-if [ $BITRISE_BUILD_STATUS -eq 0 ] ; then MESSAGE="✅ *$BITRISE_APP_TITLE*: build $BITRISE_BUILD_NUMBER passed! 🎉\nCommit: $BITRISE_GIT_MESSAGE\n Download URL ⬇️: $download_url\n\n $custom_message" ; fi
+if [ $BITRISE_BUILD_STATUS -eq 0 ] ; then MESSAGE="✅ <b>$BITRISE_APP_TITLE</b>: build $BITRISE_BUILD_NUMBER passed! 🎉\nCommit: <code>$BITRISE_GIT_MESSAGE</code> \nDownload URL ⬇️: $download_url \n\n$custom_message" ; fi
 
-curl -X POST -H "Content-Type: application/json" -d "{ \"chat_id\": \"$telegram_chat_id\", \"text\":\"$MESSAGE\", \"parse_mode\": \"markdown\" }" https://api.telegram.org/bot$telegram_bot_token/sendMessage
+payload="{ \"chat_id\": \"'${telegram_chat_id}'\", \"text\":\"$MESSAGE\", \"parse_mode\": \"HTML\" }"
+
+RESULT=$(curl -X POST https://api.telegram.org/bot${telegram_bot_token}/sendMessage \
+-H "Content-Type: application/json" \
+-d @- <<EOF
+{
+    "chat_id":"${telegram_chat_id}", 
+    "text":"$MESSAGE",
+    "parse_mode":"HTML"
+}
+EOF)
+
+# echo "$payload"
+# echo "$BITRISE_GIT_MESSAGE"
+# echo "$MESSAGE"
+# echo "$RESULT"
 
