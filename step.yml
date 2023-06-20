@@ -63,6 +63,12 @@ toolkit:
 
 
 inputs:
+  - link_previews_enabled: "no"
+    opts:
+      title: Enable Link Previews
+      value_options:
+      - "no"
+      - "yes"
   - telegram_bot_token: $TELEGRAM_BOT_TOKEN
     opts:
       description: |
@@ -91,6 +97,7 @@ inputs:
       description: |
         Any info you would like to append to the message. 
         It is sent both on succeeded and failed builds.
+        You can also include newlines in the message by using \\n.
       is_expand: true
       is_required: false
 

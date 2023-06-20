@@ -21,24 +21,54 @@ set -ex
 #  with a 0 exit code `bitrise` will register your Step as "successful".
 # Any non zero exit code will be registered as "failed" by `bitrise`.
 
-MESSAGE="🛑 *$BITRISE_APP_TITLE*: build $BITRISE_BUILD_NUMBER failed 😕 \nURL: $BITRISE_APP_URL\nCommit: $BITRISE_GIT_MESSAGE \n\n $custom_message"
 
-if [ $BITRISE_BUILD_STATUS -eq 0 ] ; then MESSAGE="✅ <b>$BITRISE_APP_TITLE</b>: build $BITRISE_BUILD_NUMBER passed! 🎉\nCommit: <code>$BITRISE_GIT_MESSAGE</code> \nDownload URL ⬇️: $download_url \n\n$custom_message" ; fi
+# Telegram Bot API URL
+api_url="https://api.telegram.org/bot${telegram_bot_token}/sendMessage"
+
+# Chat ID of the recipient
+chat_id="${telegram_chat_id}"
+
+
+MESSAGE="🛑 *$BITRISE_APP_TITLE*: build $BITRISE_BUILD_NUMBER failed 😕 \\nURL: $BITRISE_APP_URL\\nCommit: $BITRISE_GIT_MESSAGE \\n\\n $custom_message"
+
+if [ $BITRISE_BUILD_STATUS -eq 0 ] ; then MESSAGE="✅ <b>$BITRISE_APP_TITLE</b>: build $BITRISE_BUILD_NUMBER passed! 🎉\\nCommit: <code>$BITRISE_GIT_MESSAGE</code> \\nDownload URL ⬇️: $download_url \\n\\n$custom_message" ; fi
 
 payload="{ \"chat_id\": \"'${telegram_chat_id}'\", \"text\":\"$MESSAGE\", \"parse_mode\": \"HTML\" }"
 
-RESULT=$(curl -X POST https://api.telegram.org/bot${telegram_bot_token}/sendMessage \
--H "Content-Type: application/json" \
--d @- <<EOF
-{
-    "chat_id":"${telegram_chat_id}", 
-    "text":"$MESSAGE",
-    "parse_mode":"HTML"
-}
-EOF)
+# Message text with Markdown formatting and escaped characters
+# message="This is an example *bold* message with _italic_ and \`code\`.
+# You can also include newlines in the message by using \\n."
+
+# Escape characters for Markdown formatting and newlines
+escaped_message=$(echo "$MESSAGE" | sed 's/\*/\\*/g; s/_/\\_/g; s/`/\\`/g; s/\\n/\\n/g')
+
+# Check if the environment variable is set to true
+if [[ ${link_previews_enabled} == "yes" ]]; then
+  disable_preview="true"
+else
+  disable_preview="false"
+fi
+
+
+
+# RESULT=$(curl -X POST https://api.telegram.org/bot${telegram_bot_token}/sendMessage \
+# -H "Content-Type: application/json" \
+# -d @- <<EOF
+# {
+#     "chat_id":"${telegram_chat_id}", 
+#     "text":"$MESSAGE",
+#     "parse_mode":"HTML"
+# }
+# EOF)
+
+RESULT=$(curl -s -X POST "$api_url" \
+  -d "chat_id=$chat_id" \
+  -d "text=$escaped_message" \
+  -d "parse_mode=Markdown" \
+  -d "disable_web_page_preview=$disable_preview")
 
 # echo "$payload"
 # echo "$BITRISE_GIT_MESSAGE"
 # echo "$MESSAGE"
-# echo "$RESULT"
+echo "$RESULT"
 
